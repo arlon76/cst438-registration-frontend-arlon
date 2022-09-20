@@ -185,7 +185,7 @@ class Semester extends Component {
   addStudent = () => {
 	  let studentAdding=this.state.studentAdding;
 	  //const {studentAdding}=this.state.studentAdding;
-	  //console.log('102');
+	  //console.log('188');
     const token = Cookies.get('XSRF-TOKEN');
 	console.log('line 103 of AddStudent.js says student is:',studentAdding);
     fetch(`${SERVER_URL}/student`,
