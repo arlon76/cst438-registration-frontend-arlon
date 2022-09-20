@@ -183,7 +183,8 @@ class Semester extends Component {
   // Add student
   // addStudent = (student) => {
   addStudent = () => {
-	  let studentAdding=this.state.studentAdding
+	  let studentAdding=this.state.studentAdding;
+	  //const {studentAdding}=this.state.studentAdding;
 	  //console.log('102');
     const token = Cookies.get('XSRF-TOKEN');
 	console.log('line 103 of AddStudent.js says student is:',studentAdding);

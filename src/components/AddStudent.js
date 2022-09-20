@@ -127,7 +127,8 @@ class AddStudent extends Component{
   // Add student
   // addStudent = (student) => {
   addStudent = () => {
-	  let student=this.state.student
+	  let student=this.state.student	  
+	  //const {student}=this.state.student;
 	  //console.log('102');
     const token = Cookies.get('XSRF-TOKEN');
 	console.log('line 103 of AddStudent.js says student is:',student);
