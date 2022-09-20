@@ -19,9 +19,11 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
+toast.configure();
+
 // properties addStudent is required, function called when Add clicked.
-class AddStudent extends Component {
-      constructor(props) {
+class AddStudent extends Component{
+    constructor(props) {
 		  super(props);
 		  this.state = {open: false
 		  , student:{ 
@@ -34,18 +36,14 @@ class AddStudent extends Component {
 		  ,sname:'',semail:'',sstatus:'',sstatusCode:'',sstudent_id:-1 };
 		 // console.log('line 27 constructor added addStudent with state:',this.state.student);
     };
-    
     handleClickOpen = () => {
       this.setState( {open:true} );
     };
-
     handleClose = () => {
       this.setState( {open:false} );
 	  //console.log('Line 45 AddStudent.js says: student, sstatusCode: ',this.state.student,this.state.sstatusCode);
-	  
     };
-
-	setProp=(name,val)=>{
+	setProp = (name,val)=>{
 		//console.log('Line 48 AddStudent.js says: name,val:',name,val);
 		switch(name){
 			case 'student_name':
@@ -68,7 +66,6 @@ class AddStudent extends Component {
 		}
 		//console.log('Line 68 setProp.js says: ',this.state.student,this.state.sname,this.state.semail,this.state.sstatus,this.state.sstatusCode);
 	};
-	
     handleChange = (event) => {
 		//console.log('Line 72 AddStudent.js says: ',event.target.value,event.target.name);
 		this .setProp(event.target.name,event.target.value);
@@ -77,15 +74,20 @@ class AddStudent extends Component {
 		//it's threaded, you can't do that
 		//console.log('Line 76 AddStudent.js says: ',this.state.student,this.state.sname,this.state.semail,this.state.sstatus,this.state.sstatusCode);
     }
-
   // Save student and close modal form
     handleAdd = () => {
+		if ( ! (/^[0-9]+$/.test(this.state.sa_statusCode) ) ) {  
+			this.setState({message: 'The status code needs to be an integer'});
+			toast.error("The status code needs to be an integer", {
+				position: toast.POSITION.BOTTOM_LEFT
+			});
+			return;
+		}
        // this.props.addStudent(this.state.student);
 	   this.setState({student:{name:this.state.sname,email:this.state.semail,status:this.state.sstatus,statusCode:this.state.sstatusCode}},this.addStudent);
        // this.addStudent(this.state.student);
        this.handleClose();
     }
-
     render()  { 
       return (
           <div>
@@ -100,8 +102,7 @@ class AddStudent extends Component {
             <div style={{width:'100%'}}>
                 For DEBUG:  display state.
                 {JSON.stringify(this.state)}
-            </div>
-			
+            </div>			
             <Button variant="outlined" color="primary" style={{margin: 10}} onClick={this.handleClickOpen}>
               Add Student
             </Button>
@@ -117,12 +118,12 @@ class AddStudent extends Component {
                   <Button color="secondary" onClick={this.handleClose}>Cancel</Button>
                   <Button id="Add" color="primary" onClick={this.handleAdd}>Add</Button>
                 </DialogActions>
-              </Dialog>      
+              </Dialog>
+			  <ToastContainer />
           </div>
           </div>
       ); 
     }
-
   // Add student
   // addStudent = (student) => {
   addStudent = () => {
@@ -167,17 +168,16 @@ class AddStudent extends Component {
 			  ,status: res.status
 			  ,statusCode: res.statusCode
 			  ,student_id: res.student_id}
-          ,email: res.email
-          ,name: res.name
-          ,status: res.status
-          ,statusCode: res.statusCode
-          ,student_id: res.student_id
+          ,semail: res.email
+          ,sname: res.name
+          ,sstatus: res.status
+          ,sstatusCode: res.statusCode
+          ,sstudent_id: res.student_id
        });
-	   
+	   toast.success("DB row successfully added in student table.", {
+              position: toast.POSITION.BOTTOM_LEFT
+          });
       })
-		  
-	  
-	  
     .catch(err => {
       toast.error("Error when adding", {
             position: toast.POSITION.BOTTOM_LEFT
@@ -185,8 +185,6 @@ class AddStudent extends Component {
         console.error(err);
     })
   } 
-  
-  
   fetchStudent = () => {
     //console.log("Line 90 AddStudent.fetchStudent");
     const token = Cookies.get('XSRF-TOKEN');
@@ -218,13 +216,11 @@ class AddStudent extends Component {
         console.error(err); 
     })
   }
-
- 
 }
-
 // required property:  addStudent is a function to call to perform the Add action
 AddStudent.propTypes = {
-  addStudent : PropTypes.func.isRequired
+  //addStudent : PropTypes.func.isRequired
+  //it's what's passed in, not what it has here
+  
 }
-
 export default AddStudent;
