@@ -23,6 +23,11 @@ import {SERVER_URL} from '../constants.js'
 
 import ButtonGroup from '@mui/material/ButtonGroup';
 import AddStudentButton from './AddStudentButton';
+//import Login from './Login';
+
+import {checkLoginStatus_RedirectIfNeccessary, commonMethod} from './Common.js'
+
+
 toast.configure();
 
 // user selects from a list of  (year, semester) values
@@ -32,6 +37,7 @@ class Semester extends Component {
       this.state = {
 			selected: SEMESTER_LIST.length-1
 		};
+		//this._login=React.createRef();//https://stackoverflow.com/questions/24841855/how-to-access-component-methods-from-outside-in-reactjs
     }
  
    onRadioClick = (event) => {
@@ -60,9 +66,10 @@ class Semester extends Component {
       },
       { field: 'name', headerName: 'Semester', width: 200 }
       ];       
-       
+       //<Login ref={this._login} />
     return (
-       <div>this page is semester.js
+		
+       <div>This page is semester.js
          <AppBar position="static" color="default">
             <Toolbar>
                <Typography variant="h6" color="inherit">
@@ -103,6 +110,14 @@ class Semester extends Component {
       </div>
     );
 	};
+
+	 componentDidMount() {
+       // console.log(this._login.current.fetchUser()); // https://stackoverflow.com/questions/24841855/how-to-access-component-methods-from-outside-in-reactjs
+    // }
+	 // componentDidMount() {
+    checkLoginStatus_RedirectIfNeccessary();
+  }
+ 
 
 }
 export default Semester;

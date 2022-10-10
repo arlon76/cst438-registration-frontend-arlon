@@ -18,7 +18,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-
+import {checkLoginStatus_RedirectIfNeccessary, commonMethod} from './Common.js'
 toast.configure();
 
 // properties addStudent is required, function called when Add clicked.
@@ -43,7 +43,7 @@ class AddStudentButton extends Component{
       this.setState( {open:false} );
 	  //console.log('Line 45 AddStudent.js says: student, sstatusCode: ',this.state.student,this.state.sstatusCode);
     };
-	setProp = (name,val)=>{
+/*	setProp = (name,val)=>{	//completely unnessary, see last line of handleChange
 		//console.log('Line 48 AddStudent.js says: name,val:',name,val);
 		switch(name){
 			case 'student_name':
@@ -65,14 +65,15 @@ class AddStudentButton extends Component{
 				break;
 		}
 		//console.log('Line 68 setProp.js says: ',this.state.student,this.state.sname,this.state.semail,this.state.sstatus,this.state.sstatusCode);
-	};
+	};	*/
     handleChange = (event) => {
 		//console.log('Line 72 AddStudent.js says: ',event.target.value,event.target.name);
-		this .setProp(event.target.name,event.target.value);
+/*		this .setProp(event.target.name,event.target.value);*/		//unnecessary, see last line of this method
 		//console.log('Line 74 AddStudent.js says: ',this.state.student,this.state.student,this.state.sname,this.state.semail,this.state.sstatusCode);
 		//this.setState({student:{name:this.state.sname,email:this.state.semail,status:this.state.sstatus,statusCode:this.state.sstatusCode}});
 		//it's threaded, you can't do that
 		//console.log('Line 76 AddStudent.js says: ',this.state.student,this.state.sname,this.state.semail,this.state.sstatus,this.state.sstatusCode);
+		this.setState({[event.target.name]: event.target.value});
     }
   // Save student and close modal form
     handleAdd = () => {
@@ -121,7 +122,7 @@ class AddStudentButton extends Component{
 	console.log('line 103 of AddStudent.js says student is:',student);
     fetch(`${SERVER_URL}/student`,
       { 
-        method: 'POST', 
+        method: 'POST', credentials: 'include',
         headers: { 'Content-Type': 'application/json',
                    'X-XSRF-TOKEN': token  }, 
         body: JSON.stringify(student)
@@ -179,7 +180,7 @@ class AddStudentButton extends Component{
     
     fetch(`${SERVER_URL}/student?id=${this.props.student.id}`, 
       {  
-        method: 'GET', 
+        method: 'GET', credentials: 'include',
         headers: { 'X-XSRF-TOKEN': token }
       } )
     .then((response) => {

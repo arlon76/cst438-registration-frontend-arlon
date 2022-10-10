@@ -6,6 +6,7 @@ import SchedList from './components/SchedList';
 import Semester from './components/Semester';
 import AddStudent from './components/AddStudent';
 import AddCourse from './components/AddCourse';
+import Login from './components/Login';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 function App() {
@@ -20,7 +21,8 @@ function App() {
       </AppBar>
       <BrowserRouter>
        <Switch>
-        <Route exact path='/' component={Semester} />
+        <Route exact path='/' component={Login} />
+        <Route exact path='/semester' component={Semester} />
         <Route path='/schedule' component={SchedList} />
         <Route path='/course' component={AddCourse} />
         <Route path='/student' component={AddStudent} />
