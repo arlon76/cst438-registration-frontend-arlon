@@ -7,6 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
+import {checkLoginStatus_RedirectIfNeccessary, commonMethod} from './Common.js'
 
 // properties addCoure is required, function called when Add clicked.
 class AddCourse extends Component {
@@ -52,6 +53,10 @@ class AddCourse extends Component {
           </div>
       ); 
     }
+
+	componentDidMount() {
+		checkLoginStatus_RedirectIfNeccessary();
+	}
 }
 
 // required property:  addCourse is a function to call to perform the Add action

@@ -11,7 +11,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import AddCourse from './AddCourse';
-
+import {checkLoginStatus_RedirectIfNeccessary, commonMethod} from './Common.js'
 // NOTE:  for OAuth security, http request must have
 //   credentials: 'include' 
 //
@@ -28,6 +28,7 @@ class SchedList extends Component {
   } 
   
   componentDidMount() {
+	  checkLoginStatus_RedirectIfNeccessary();
     this.fetchCourses();
   }
   
@@ -37,7 +38,7 @@ class SchedList extends Component {
     
     fetch(`${SERVER_URL}/schedule?year=${this.props.location.year}&semester=${this.props.location.semester}`, 
       {  
-        method: 'GET', 
+        method: 'GET', credentials: 'include',
         headers: { 'X-XSRF-TOKEN': token }
       } )
     .then((response) => {
@@ -70,7 +71,7 @@ class SchedList extends Component {
       
       fetch(`${SERVER_URL}/schedule/${id}`,
         {
-          method: 'DELETE',
+          method: 'DELETE',credentials: 'include',
           headers: { 'X-XSRF-TOKEN': token }
         })
     .then(res => {
@@ -100,7 +101,7 @@ class SchedList extends Component {
  
     fetch(`${SERVER_URL}/schedule`,
       { 
-        method: 'POST', 
+        method: 'POST', credentials: 'include',
         headers: { 'Content-Type': 'application/json',
                    'X-XSRF-TOKEN': token  }, 
         body: JSON.stringify(course)

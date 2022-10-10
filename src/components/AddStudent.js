@@ -19,6 +19,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import AddStudentButton from './AddStudentButton';
+import {checkLoginStatus_RedirectIfNeccessary, commonMethod} from './Common.js'
 toast.configure();
 
 // properties addStudent is required, function called when Add clicked.
@@ -49,6 +50,11 @@ class AddStudent extends Component{
           </div>
       ); 
     }
+
+	componentDidMount() {
+		checkLoginStatus_RedirectIfNeccessary();
+	}
+
 }
 // required property:  addStudent is a function to call to perform the Add action
 AddStudent.propTypes = {
