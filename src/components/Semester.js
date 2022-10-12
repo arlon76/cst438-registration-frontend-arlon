@@ -23,10 +23,11 @@ import {SERVER_URL} from '../constants.js'
 
 import ButtonGroup from '@mui/material/ButtonGroup';
 import AddStudentButton from './AddStudentButton';
+import CheckIfAdmin_TemporaryButton from './CheckIfAdmin_TemporaryButton.js';
 //import Login from './Login';
 
 import {checkLoginStatus_RedirectIfNeccessary, commonMethod} from './Common.js'
-
+import {checkAdminStatus} from './Common.js'
 
 toast.configure();
 
@@ -36,6 +37,7 @@ class Semester extends Component {
       super(props);
       this.state = {
 			selected: SEMESTER_LIST.length-1
+			,admin:false
 		};
 		//this._login=React.createRef();//https://stackoverflow.com/questions/24841855/how-to-access-component-methods-from-outside-in-reactjs
     }
@@ -67,6 +69,10 @@ class Semester extends Component {
       { field: 'name', headerName: 'Semester', width: 200 }
       ];       
        //<Login ref={this._login} />
+	//<CheckIfAdmin_TemporaryButton />	
+	let adminAddStudentButtons;
+	if(this.state.admin){adminAddStudentButtons=<span><AddStudentButton /><Button component={Link} to={{pathname:'/student'  }} variant="outlined" color="primary" style={{margin: 10}}> Go To The Add Student Page </Button> </span>;
+}else adminAddStudentButtons=<span></span>;
     return (
 		
        <div>This page is semester.js
@@ -86,25 +92,12 @@ class Semester extends Component {
                       year:SEMESTER_LIST[this.state.selected].year, 
                       semester:SEMESTER_LIST[this.state.selected].name}} 
                 variant="outlined" color="primary" style={{margin: 10}}>
-                Get Schedule
-              </Button> 
-				<AddStudentButton />
-              <Button component={Link} 
-                      to={{pathname:'/student'
-					  /* , year:SEMESTER_LIST[this.state.selected].year, 
-                      semester:SEMESTER_LIST[this.state.selected].name*/
-					  }} 
-					variant="outlined" color="primary" style={{margin: 10}}>
-                Go To The Add Student Page
-              </Button> 
-              <Button component={Link} 
+                Get Schedule</Button>{adminAddStudentButtons}<Button component={Link} 
                       to={{pathname:'/course'
 					  /* , year:SEMESTER_LIST[this.state.selected].year, 
                       semester:SEMESTER_LIST[this.state.selected].name*/
 					  }} 
-					variant="outlined" color="primary" style={{margin: 10}}>
-                Go To The Add Course Page
-              </Button>
+					variant="outlined" color="primary" style={{margin: 10}}>Go To The Add Course Page</Button>
 			  <ToastContainer />
           </div>
       </div>
@@ -116,6 +109,22 @@ class Semester extends Component {
     // }
 	 // componentDidMount() {
     checkLoginStatus_RedirectIfNeccessary();
+	
+	  checkAdminStatus((json)=>{
+		  console.log('Line 123 component did mount check admin Status says json is:');
+		  console.log(json);
+		  console.log(json.email);
+		  if(json.email!='NOT ADMIN!'){
+			  console.log('line 123 Semester setting admin to true');
+			this.setState({admin:true});
+		 }
+		  else{
+			  
+			  console.log('line 127 Semester not admin');
+			   this.setState({admin:false});
+		  }
+	  });
+
   }
  
 

@@ -45,3 +45,45 @@ export const checkLoginStatus_RedirectIfNeccessary = () => {
 		console.error(err);
      } );
     }
+	
+
+export const checkAdminStatus = (andThen) => {
+    console.log("FETCH Line 51 Common.js checking admin status");
+    const token = Cookies.get('XSRF-TOKEN');
+    fetch(SERVER_URL + '/admin', 
+      {  
+        method: 'GET'
+	/*	, NOTredirect: 'follow'	
+		, redirect: 'manual'*/
+		, headers: { 'X-XSRF-TOKEN': token }
+        , credentials: 'include'
+      } )
+      .then(response => {
+        console.log("Line 22 Common.js reporting: redirect::" + response.status);
+        // for 401 (not authorized), user is not logged in.  Continue to render() 
+        //  and display login.
+        // Otherwise, then user is logged in, redirect to Problem.js
+        // if (response.status != 401) {
+        if (response.status == 401) {
+			  console.log("Line 28 Common.js reporting: response.status == 401, redirecting to / next" );
+			//window.location.href = '/semester';
+			// window.location.href =response.redirect;
+			//console.log(JSON.parse(JSON.stringify(response)));
+			//console.log(JSON.parse(JSON.stringify(response.body)));
+			// window.location.href =response;
+			// window.location.href ='/semester';
+			//window.location.href ='/';
+        }
+		return response;
+    } )
+	.then(response=>response.json())
+	.then(json=>{
+		console.log("Line 81 response for admin id=");
+		console.log(json);
+		andThen(json);
+	})
+    .catch(err => {
+		console.error(err);
+     } );
+    }
+	
